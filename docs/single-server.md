@@ -12,7 +12,7 @@ For an all-NixOS alternative, use a NixOS physical host with KVM/libvirt and sep
 2. `edge-vm`: externally oriented applications, independently publishable and independently revocable.
 3. `agent-vm`: unprivileged Hermes runtime and bounded integration tooling.
 
-Add `media-vm` and `photos-vm` if using the broader service catalog. Keeping these separate is especially useful where storage, database upgrades, indexing, transcoding or machine learning would otherwise compete with the agent. A smaller installation can omit them entirely; merging data-heavy services is a new risk decision, not a requirement.
+The current fleet already includes `media-vm` and `photos-vm`. In an adaptation, add them if using those service families. Keeping these separate is especially useful where storage, database upgrades, indexing, transcoding or machine learning would otherwise compete with the agent. A smaller installation can omit them entirely; merging data-heavy services is a new risk decision, not a requirement.
 
 ## Capacity planning, not invented sizing
 

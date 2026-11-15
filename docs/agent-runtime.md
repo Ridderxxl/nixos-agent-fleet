@@ -1,5 +1,7 @@
 # Hermes runtime and companion-agent pattern
 
+The dated [current snapshot](current-state.md) and [catalog](services.md) record observed server units separately from workflow acceptance. The companion pattern below is an adaptation, not the definition of this fleet. See [gateway/permission lessons](pitfalls.md) before assuming a failed chat is a generic permissions problem.
+
 ## Server versus workstation
 
 On the always-on server, `agent-vm` runs the agent independently of a laptop. A smaller companion installation can run a dedicated NixOS-WSL environment on Windows with the same ideas: non-admin runtime, separate human administrator, pinned setup source, Signal and private phone ingress. WSL is not equivalent to a full independent VM and cannot provide continuous availability while its PC sleeps. The Windows owner remains able to administer it.

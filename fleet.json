@@ -1,11 +1,15 @@
 {
-  "schema_version": 1,
-  "kind": "sanitized-architecture-reference",
+  "schema_version": 2,
+  "kind": "sanitized-current-fleet-snapshot",
   "assessment": {
-    "basis": "private source and prior companion-agent design reviewed; rewritten as generic roles",
+    "basis": "current committed private fleet source, selected runbooks and bounded read-only guest observations",
     "review_date": "2026-11-15",
-    "live_status": "not-assessed",
-    "deployable": false
+    "live_status": "partially-assessed",
+    "deployable": false,
+    "runtime_observation_date": "2026-11-15",
+    "snapshot_scope": "current fleet, not limited to a companion installation",
+    "runtime_limits": "unit/timer/container metadata on four guests; edge and hypervisor not inspected; no end-to-end application workflows",
+    "historical_basis": "200 earliest pull-request records, including unmerged proposals; selected incident bodies reviewed as historical evidence only"
   },
   "substrate": {
     "source_design": "Proxmox VE",
@@ -16,28 +20,43 @@
   "roles": [
     {
       "id": "apps-vm",
-      "required": true,
-      "trust_zone": "private-applications"
+      "trust_zone": "private-applications",
+      "core_for_adaptation": true,
+      "current_fleet_member": true,
+      "guest_os": "NixOS",
+      "runtime_status": "guest-observed"
     },
     {
       "id": "edge-vm",
-      "required": true,
-      "trust_zone": "untrusted-edge"
+      "trust_zone": "untrusted-edge",
+      "core_for_adaptation": true,
+      "current_fleet_member": true,
+      "guest_os": "NixOS",
+      "runtime_status": "not-assessed"
     },
     {
       "id": "agent-vm",
-      "required": true,
-      "trust_zone": "untrusted-planner"
+      "trust_zone": "untrusted-planner",
+      "core_for_adaptation": true,
+      "current_fleet_member": true,
+      "guest_os": "NixOS",
+      "runtime_status": "guest-observed"
     },
     {
       "id": "media-vm",
-      "required": false,
-      "trust_zone": "media-workload"
+      "trust_zone": "media-workload",
+      "core_for_adaptation": false,
+      "current_fleet_member": true,
+      "guest_os": "NixOS",
+      "runtime_status": "guest-observed"
     },
     {
       "id": "photos-vm",
-      "required": false,
-      "trust_zone": "private-photo-data"
+      "trust_zone": "private-photo-data",
+      "core_for_adaptation": false,
+      "current_fleet_member": true,
+      "guest_os": "NixOS",
+      "runtime_status": "guest-observed"
     }
   ],
   "evidence_statuses": [
@@ -55,7 +74,11 @@
       "software": "Miniflux",
       "evidence_status": "source-configured",
       "notes": "Private feed reading; do not infer that an edge RSS endpoint is currently published.",
-      "live_status": "not-assessed"
+      "live_status": "unit-active",
+      "observed_on": "2026-11-15",
+      "observation_method": "read-only systemd unit/timer and container metadata",
+      "runtime_note": "Native RSS service active.",
+      "acceptance_status": "not-assessed"
     },
     {
       "id": "bookmarks",
@@ -64,7 +87,11 @@
       "software": "Linkwarden",
       "evidence_status": "source-configured",
       "notes": "Bookmark storage and archived-page retrieval.",
-      "live_status": "not-assessed"
+      "live_status": "unit-active",
+      "observed_on": "2026-11-15",
+      "observation_method": "read-only systemd unit/timer and container metadata",
+      "runtime_note": "Bookmark application and database container units active; application reported healthy.",
+      "acceptance_status": "not-assessed"
     },
     {
       "id": "budget",
@@ -73,7 +100,11 @@
       "software": "Actual Budget",
       "evidence_status": "source-configured",
       "notes": "Private financial state; HTTPS and separate write approvals.",
-      "live_status": "not-assessed"
+      "live_status": "unit-active",
+      "observed_on": "2026-11-15",
+      "observation_method": "read-only systemd unit/timer and container metadata",
+      "runtime_note": "Budget container active; no financial records read.",
+      "acceptance_status": "not-assessed"
     },
     {
       "id": "tasks",
@@ -82,7 +113,11 @@
       "software": "Vikunja / Task Coach",
       "evidence_status": "source-configured",
       "notes": "Task scoring and integrations; no automatic permission to modify tasks.",
-      "live_status": "not-assessed"
+      "live_status": "unit-active",
+      "observed_on": "2026-11-15",
+      "observation_method": "read-only systemd unit/timer and container metadata",
+      "runtime_note": "Task API and scoring services active; auto-labeling timer present. Scoring and notifications not tested.",
+      "acceptance_status": "not-assessed"
     },
     {
       "id": "documents",
@@ -90,8 +125,12 @@
       "role": "apps-vm",
       "software": "Paperless-ngx",
       "evidence_status": "source-configured",
-      "notes": "Requires verified storage and actual application acceptance.",
-      "live_status": "not-assessed"
+      "notes": "Source enabled; application units inactive in snapshot. Active ingress is not backend readiness.",
+      "live_status": "unit-inactive",
+      "observed_on": "2026-11-15",
+      "observation_method": "read-only systemd unit/timer and container metadata",
+      "runtime_note": "Application units inactive; Redis and ingress sidecar active. Cause not established.",
+      "acceptance_status": "not-assessed"
     },
     {
       "id": "recipes",
@@ -100,7 +139,11 @@
       "software": "Recipe / meal-planning application",
       "evidence_status": "source-configured",
       "notes": "Personal recipe and meal records are never public examples.",
-      "live_status": "not-assessed"
+      "live_status": "unit-active",
+      "observed_on": "2026-11-15",
+      "observation_method": "read-only systemd unit/timer and container metadata",
+      "runtime_note": "Recipe application and database services active; no private content read.",
+      "acceptance_status": "not-assessed"
     },
     {
       "id": "calendars",
@@ -109,7 +152,11 @@
       "software": "CalDAV services / synchronization workers",
       "evidence_status": "source-configured",
       "notes": "Ownership, privacy and loop prevention require collection-level tests.",
-      "live_status": "not-assessed"
+      "live_status": "unit-active",
+      "observed_on": "2026-11-15",
+      "observation_method": "read-only systemd unit/timer and container metadata",
+      "runtime_note": "CalDAV server active; collection rights and provider synchronization not tested.",
+      "acceptance_status": "not-assessed"
     },
     {
       "id": "travel",
@@ -118,7 +165,11 @@
       "software": "Travel planning application",
       "evidence_status": "source-configured",
       "notes": "Imports and provider writes remain independently approved.",
-      "live_status": "not-assessed"
+      "live_status": "unit-active",
+      "observed_on": "2026-11-15",
+      "observation_method": "read-only systemd unit/timer and container metadata",
+      "runtime_note": "Travel container active and reported healthy; no reservations or attachments read.",
+      "acceptance_status": "not-assessed"
     },
     {
       "id": "social-private",
@@ -127,7 +178,11 @@
       "software": "Social archive / analytics application",
       "evidence_status": "source-configured",
       "notes": "Per-account analytics and optional publication workflows.",
-      "live_status": "not-assessed"
+      "live_status": "unit-active",
+      "observed_on": "2026-11-15",
+      "observation_method": "read-only systemd unit/timer and container metadata",
+      "runtime_note": "Private analytics service active; provider connectivity and publication not tested.",
+      "acceptance_status": "not-assessed"
     },
     {
       "id": "dashboard",
@@ -136,7 +191,11 @@
       "software": "Service launcher / dashboard",
       "evidence_status": "source-configured",
       "notes": "Navigation is not an authentication or health guarantee.",
-      "live_status": "not-assessed"
+      "live_status": "unit-active",
+      "observed_on": "2026-11-15",
+      "observation_method": "read-only systemd unit/timer and container metadata",
+      "runtime_note": "Web-server and endpoint sidecar active; browser workflow not tested.",
+      "acceptance_status": "not-assessed"
     },
     {
       "id": "location",
@@ -145,16 +204,24 @@
       "software": "Dawarich",
       "evidence_status": "source-disabled",
       "notes": "Represented but explicitly disabled at inspection.",
-      "live_status": "not-assessed"
+      "live_status": "not-assessed",
+      "observed_on": null,
+      "observation_method": null,
+      "runtime_note": "Source-level representation only; no direct runtime or workflow assessment.",
+      "acceptance_status": "not-assessed"
     },
     {
       "id": "asset-inventory",
-      "name": "Asset inventory",
+      "name": "Visual infrastructure inventory",
       "role": "apps-vm",
-      "software": "Asset-management application",
+      "software": "Homelable",
       "evidence_status": "source-disabled",
       "notes": "Represented but explicitly disabled at inspection.",
-      "live_status": "not-assessed"
+      "live_status": "not-assessed",
+      "observed_on": null,
+      "observation_method": null,
+      "runtime_note": "Source-level representation only; no direct runtime or workflow assessment.",
+      "acceptance_status": "not-assessed"
     },
     {
       "id": "edge-social",
@@ -163,8 +230,342 @@
       "software": "Authenticated analytics / publishing application",
       "evidence_status": "source-gated",
       "notes": "Source enables application and private ingress; public publication is disabled at inspection.",
-      "live_status": "not-assessed"
+      "live_status": "not-assessed",
+      "observed_on": null,
+      "observation_method": null,
+      "runtime_note": "Source-level representation only; no direct runtime or workflow assessment.",
+      "acceptance_status": "not-assessed"
     },
+    {
+      "id": "hermes",
+      "name": "Agent runtime",
+      "role": "agent-vm",
+      "software": "Hermes Agent",
+      "evidence_status": "source-configured",
+      "notes": "Persistent sessions, memory, skills, tools and provider configuration.",
+      "live_status": "unit-active",
+      "observed_on": "2026-11-15",
+      "observation_method": "read-only systemd unit/timer and container metadata",
+      "runtime_note": "Multiple agent gateway units active; provider-backed chat not retested for this snapshot.",
+      "acceptance_status": "not-assessed"
+    },
+    {
+      "id": "signal",
+      "name": "Phone messaging",
+      "role": "agent-vm",
+      "software": "Signal / signal-cli",
+      "evidence_status": "source-pattern",
+      "notes": "Sender allowlists and human-owned enrollment; linked account material is sensitive.",
+      "live_status": "unit-active",
+      "observed_on": "2026-11-15",
+      "observation_method": "read-only systemd unit/timer and container metadata",
+      "runtime_note": "Separate Signal daemon units active; no enrollment or test messages generated.",
+      "acceptance_status": "not-assessed"
+    },
+    {
+      "id": "android",
+      "name": "Android companion",
+      "role": "agent-vm",
+      "software": "Third-party Hermes-Relay plugin and companion",
+      "evidence_status": "source-pattern",
+      "notes": "Separate from the upstream hosted messaging-relay connector; pairing and grants are explicit.",
+      "live_status": "unit-active",
+      "observed_on": "2026-11-15",
+      "observation_method": "read-only systemd unit/timer and container metadata",
+      "runtime_note": "Companion transport service active; physical-device pairing and reconnect not tested.",
+      "acceptance_status": "not-assessed"
+    },
+    {
+      "id": "web-chat",
+      "name": "Private browser chat",
+      "role": "agent-vm",
+      "software": "Authenticated Hermes web surfaces",
+      "evidence_status": "source-pattern",
+      "notes": "Private ingress, session authentication and correct proxy routing must be tested.",
+      "live_status": "unit-active",
+      "observed_on": "2026-11-15",
+      "observation_method": "read-only systemd unit/timer and container metadata",
+      "runtime_note": "Dashboard and companion endpoint units active; authentication and chat acceptance not repeated.",
+      "acceptance_status": "not-assessed"
+    },
+    {
+      "id": "coding",
+      "name": "Coding workers and work tracking",
+      "role": "agent-vm",
+      "software": "Named coding profiles / task board",
+      "evidence_status": "source-pattern",
+      "notes": "Explicit profile, isolated worktree, bounded budget, independent artifact review.",
+      "live_status": "not-assessed",
+      "observed_on": null,
+      "observation_method": null,
+      "runtime_note": "Source-level representation only; no direct runtime or workflow assessment.",
+      "acceptance_status": "not-assessed"
+    },
+    {
+      "id": "knowledge",
+      "name": "Knowledge retrieval",
+      "role": "agent-vm",
+      "software": "Wiki / local knowledge / bookmark tools",
+      "evidence_status": "source-pattern",
+      "notes": "Only approved documents and scoped retrieval sources.",
+      "live_status": "not-assessed",
+      "observed_on": null,
+      "observation_method": null,
+      "runtime_note": "Source-level representation only; no direct runtime or workflow assessment.",
+      "acceptance_status": "not-assessed"
+    },
+    {
+      "id": "mail",
+      "name": "Searchable mail archive",
+      "role": "agent-vm",
+      "software": "Read-only mail archive / approved ingest",
+      "evidence_status": "source-configured",
+      "notes": "Mailbox access, retention and outbound effects are separate capabilities.",
+      "live_status": "scheduled-job-observed",
+      "observed_on": "2026-11-15",
+      "observation_method": "read-only systemd unit/timer and container metadata",
+      "runtime_note": "Archive extraction and indexing timers present; search correctness and archive coverage not tested.",
+      "acceptance_status": "not-assessed"
+    },
+    {
+      "id": "mail-actions",
+      "name": "Mail to proposed travel/calendar actions",
+      "role": "agent-vm",
+      "software": "Structured ingest / review pipeline",
+      "evidence_status": "source-pattern",
+      "notes": "Independent processing, identity and network-release gates; local extractor inference disabled. Untrusted mail cannot authorize effects.",
+      "live_status": "unit-active",
+      "observed_on": "2026-11-15",
+      "observation_method": "read-only systemd unit/timer and container metadata",
+      "runtime_note": "Broker and Signal interaction services active; ingest/extract timers present, one-shots idle. No destination writes tested.",
+      "acceptance_status": "not-assessed"
+    },
+    {
+      "id": "home-control",
+      "name": "Home automation capabilities",
+      "role": "agent-vm",
+      "software": "Home Assistant bridge",
+      "evidence_status": "source-pattern",
+      "notes": "Prefer narrow capability services; do not grant a broad admin token by default.",
+      "live_status": "not-assessed",
+      "observed_on": null,
+      "observation_method": null,
+      "runtime_note": "Source-level representation only; no direct runtime or workflow assessment.",
+      "acceptance_status": "not-assessed"
+    },
+    {
+      "id": "budget-agent",
+      "name": "Budget categorization automation",
+      "role": "agent-vm",
+      "software": "Reviewed categorization workflow",
+      "evidence_status": "source-gated",
+      "notes": "Workflow enabled in source; its credentials independently disabled at inspection.",
+      "live_status": "not-assessed",
+      "observed_on": null,
+      "observation_method": null,
+      "runtime_note": "Source-level representation only; no direct runtime or workflow assessment.",
+      "acceptance_status": "not-assessed"
+    },
+    {
+      "id": "updates",
+      "name": "Dependency update proposals",
+      "role": "agent-vm",
+      "software": "Deterministic updater / publication broker",
+      "evidence_status": "source-pattern",
+      "notes": "Allowlisted pins, builds, reviewable PR and fixed-recipient report; no autonomous merge/deploy.",
+      "live_status": "scheduled-job-observed",
+      "observed_on": "2026-11-15",
+      "observation_method": "read-only systemd unit/timer and container metadata",
+      "runtime_note": "Updater timer present; PR publication and report delivery not verified.",
+      "acceptance_status": "not-assessed"
+    },
+    {
+      "id": "observation",
+      "name": "Fleet failure observation",
+      "role": "agent-vm",
+      "software": "Deterministic watchdog / observers",
+      "evidence_status": "source-pattern",
+      "notes": "Persist evidence; distinguish stale incident state from fresh failure.",
+      "live_status": "scheduled-job-observed",
+      "observed_on": "2026-11-15",
+      "observation_method": "read-only systemd unit/timer and container metadata",
+      "runtime_note": "Observer polling timer present; no incidents cleared or failures triggered.",
+      "acceptance_status": "not-assessed"
+    },
+    {
+      "id": "agent-backup",
+      "name": "Agent state backup",
+      "role": "agent-vm",
+      "software": "Declared state-backup jobs",
+      "evidence_status": "source-pattern",
+      "notes": "SQLite consistency, provider auth, paired devices and isolated restore must be covered.",
+      "live_status": "scheduled-job-observed",
+      "observed_on": "2026-11-15",
+      "observation_method": "read-only systemd unit/timer and container metadata",
+      "runtime_note": "State-backup timer present; contents, off-host copies and restore not assessed.",
+      "acceptance_status": "not-assessed"
+    },
+    {
+      "id": "media",
+      "name": "Media playback and automation",
+      "role": "media-vm",
+      "software": "Jellyfin / Sonarr / Radarr / SABnzbd / Jellyseerr / Pinchflat / Maintainerr",
+      "evidence_status": "source-configured",
+      "notes": "Declare OCI workloads; isolate library paths from private photos.",
+      "live_status": "unit-active",
+      "observed_on": "2026-11-15",
+      "observation_method": "read-only systemd unit/timer and container metadata",
+      "runtime_note": "All seven listed media container units active; some report health. Playback/download/cleanup not exercised.",
+      "acceptance_status": "not-assessed"
+    },
+    {
+      "id": "photos",
+      "name": "Photo library",
+      "role": "photos-vm",
+      "software": "Immich / PostgreSQL / cache / machine learning",
+      "evidence_status": "source-configured",
+      "notes": "Database and media backup consistency; mount-writability and upload acceptance.",
+      "live_status": "unit-active",
+      "observed_on": "2026-11-15",
+      "observation_method": "read-only systemd unit/timer and container metadata",
+      "runtime_note": "Photo server, database, cache and ML units active; server/database/ML reported healthy. Upload/restore not exercised.",
+      "acceptance_status": "not-assessed"
+    },
+    {
+      "id": "document-tools",
+      "name": "PDF / Office / OCR tools",
+      "role": "agent-vm",
+      "software": "Document processing tooling",
+      "evidence_status": "source-pattern",
+      "notes": "Explicitly approved files, pinned executables, bounded processing.",
+      "live_status": "not-assessed",
+      "observed_on": null,
+      "observation_method": null,
+      "runtime_note": "Source-level representation only; no direct runtime or workflow assessment.",
+      "acceptance_status": "not-assessed"
+    },
+    {
+      "id": "browser-tools",
+      "name": "Browser automation",
+      "role": "agent-vm",
+      "software": "Browser tooling",
+      "evidence_status": "source-pattern",
+      "notes": "Test actual NixOS browser launch; no public debugging endpoint or copied personal cookies.",
+      "live_status": "not-assessed",
+      "observed_on": null,
+      "observation_method": null,
+      "runtime_note": "Source-level representation only; no direct runtime or workflow assessment.",
+      "acceptance_status": "not-assessed"
+    },
+    {
+      "id": "personal-hub",
+      "name": "Personal planning and review hub",
+      "role": "agent-vm",
+      "software": "Personal Hub API / web UI",
+      "evidence_status": "source-configured",
+      "notes": "Authenticated live interface and broker-mediated reviewed writes; legacy preview transport naming does not mean synthetic-only content.",
+      "live_status": "unit-active",
+      "observed_on": "2026-11-15",
+      "observation_method": "read-only systemd unit/timer and container metadata",
+      "runtime_note": "Live API and interface/publisher units active; individual planning and approval workflows not retested.",
+      "acceptance_status": "not-assessed"
+    },
+    {
+      "id": "network-tools",
+      "name": "Private network companion",
+      "role": "apps-vm",
+      "software": "LAN-Orangutan",
+      "evidence_status": "source-configured",
+      "notes": "Private application on the existing apps guest, not another VM. No new network scan run.",
+      "live_status": "unit-active",
+      "observed_on": "2026-11-15",
+      "observation_method": "read-only systemd unit/timer and container metadata",
+      "runtime_note": "Application container active and reported healthy.",
+      "acceptance_status": "not-assessed"
+    },
+    {
+      "id": "calendar-sync",
+      "name": "Availability synchronization",
+      "role": "apps-vm",
+      "software": "Keeper / Radicale integration",
+      "evidence_status": "source-configured",
+      "notes": "Availability projection is not blanket shared-calendar write permission.",
+      "live_status": "unit-active",
+      "observed_on": "2026-11-15",
+      "observation_method": "read-only systemd unit/timer and container metadata",
+      "runtime_note": "Synchronization container and endpoint sidecar active; providers and collections not assessed.",
+      "acceptance_status": "not-assessed"
+    },
+    {
+      "id": "deadman",
+      "name": "Independent observer-failure notification",
+      "role": "apps-vm",
+      "software": "Deterministic dead-man checker / dedicated Signal transport",
+      "evidence_status": "source-pattern",
+      "notes": "Independent of the agent runtime; timer presence does not prove delivered alerts.",
+      "live_status": "scheduled-job-observed",
+      "observed_on": "2026-11-15",
+      "observation_method": "read-only systemd unit/timer and container metadata",
+      "runtime_note": "Dedicated linked-device transport active and timer present; no alert triggered.",
+      "acceptance_status": "not-assessed"
+    },
+    {
+      "id": "deployment",
+      "name": "Approval-triggered deployment controller",
+      "role": "agent-vm",
+      "software": "Fixed-scope deployment broker",
+      "evidence_status": "source-pattern",
+      "notes": "Exact-target approval workflow represented in source, not an arbitrary model-controlled remote shell.",
+      "live_status": "not-assessed",
+      "observed_on": null,
+      "observation_method": null,
+      "runtime_note": "Source-level representation; no deployment or controller workflow exercised.",
+      "acceptance_status": "not-assessed"
+    },
+    {
+      "id": "mail-provider",
+      "name": "Private mail-provider bridge",
+      "role": "agent-vm",
+      "software": "Proton Mail Bridge / migration tooling",
+      "evidence_status": "source-configured",
+      "notes": "Bridge liveness does not prove mailbox migration completion; credentialed connectors are separately gated.",
+      "live_status": "unit-active",
+      "observed_on": "2026-11-15",
+      "observation_method": "read-only systemd unit/timer and container metadata",
+      "runtime_note": "Headless bridge unit active; no mailbox content or migration state read.",
+      "acceptance_status": "not-assessed"
+    },
+    {
+      "id": "aux-workbench",
+      "name": "Auxiliary agent workbench preparation",
+      "role": "agent-vm",
+      "software": "Readiness-gated workbench",
+      "evidence_status": "source-gated",
+      "notes": "Preparation enabled, readiness false; not a running or usable listener claim.",
+      "live_status": "not-assessed",
+      "observed_on": null,
+      "observation_method": null,
+      "runtime_note": "No runtime assessment; source readiness gate closed.",
+      "acceptance_status": "not-assessed"
+    }
+  ],
+  "invariants": [
+    "public aliases are not connection targets",
+    "public reference grants no infrastructure authority",
+    "source configuration and unit observations do not imply end-to-end acceptance",
+    "edge does not inherit private management credentials",
+    "profiles are not Unix security boundaries",
+    "build is not activation; activation is not application acceptance",
+    "Git is not application-state backup",
+    "all VMs on one server share hardware failure risk"
+  ],
+  "runtime_statuses": [
+    "unit-active",
+    "unit-inactive",
+    "scheduled-job-observed",
+    "not-assessed"
+  ],
+  "recommendations": [
     {
       "id": "edge-rss",
       "name": "Externally accessible RSS pattern",
@@ -175,141 +576,6 @@
       "live_status": "not-assessed"
     },
     {
-      "id": "hermes",
-      "name": "Agent runtime",
-      "role": "agent-vm",
-      "software": "Hermes Agent",
-      "evidence_status": "source-configured",
-      "notes": "Persistent sessions, memory, skills, tools and provider configuration.",
-      "live_status": "not-assessed"
-    },
-    {
-      "id": "signal",
-      "name": "Phone messaging",
-      "role": "agent-vm",
-      "software": "Signal / signal-cli",
-      "evidence_status": "source-pattern",
-      "notes": "Sender allowlists and human-owned enrollment; linked account material is sensitive.",
-      "live_status": "not-assessed"
-    },
-    {
-      "id": "android",
-      "name": "Android companion",
-      "role": "agent-vm",
-      "software": "Third-party Hermes-Relay plugin and companion",
-      "evidence_status": "source-pattern",
-      "notes": "Separate from the upstream hosted messaging-relay connector; pairing and grants are explicit.",
-      "live_status": "not-assessed"
-    },
-    {
-      "id": "web-chat",
-      "name": "Private browser chat",
-      "role": "agent-vm",
-      "software": "Authenticated Hermes web surfaces",
-      "evidence_status": "source-pattern",
-      "notes": "Private ingress, session authentication and correct proxy routing must be tested.",
-      "live_status": "not-assessed"
-    },
-    {
-      "id": "coding",
-      "name": "Coding workers and work tracking",
-      "role": "agent-vm",
-      "software": "Named coding profiles / task board",
-      "evidence_status": "source-pattern",
-      "notes": "Explicit profile, isolated worktree, bounded budget, independent artifact review.",
-      "live_status": "not-assessed"
-    },
-    {
-      "id": "knowledge",
-      "name": "Knowledge retrieval",
-      "role": "agent-vm",
-      "software": "Wiki / local knowledge / bookmark tools",
-      "evidence_status": "source-pattern",
-      "notes": "Only approved documents and scoped retrieval sources.",
-      "live_status": "not-assessed"
-    },
-    {
-      "id": "mail",
-      "name": "Searchable mail archive",
-      "role": "agent-vm",
-      "software": "Read-only mail archive / approved ingest",
-      "evidence_status": "source-configured",
-      "notes": "Mailbox access, retention and outbound effects are separate capabilities.",
-      "live_status": "not-assessed"
-    },
-    {
-      "id": "mail-actions",
-      "name": "Mail to proposed travel/calendar actions",
-      "role": "agent-vm",
-      "software": "Structured ingest / review pipeline",
-      "evidence_status": "source-pattern",
-      "notes": "Untrusted source content is evidence, never an authorization instruction.",
-      "live_status": "not-assessed"
-    },
-    {
-      "id": "home-control",
-      "name": "Home automation capabilities",
-      "role": "agent-vm",
-      "software": "Home Assistant bridge",
-      "evidence_status": "source-pattern",
-      "notes": "Prefer narrow capability services; do not grant a broad admin token by default.",
-      "live_status": "not-assessed"
-    },
-    {
-      "id": "budget-agent",
-      "name": "Budget categorization automation",
-      "role": "agent-vm",
-      "software": "Reviewed categorization workflow",
-      "evidence_status": "source-gated",
-      "notes": "Workflow enabled in source; its credentials independently disabled at inspection.",
-      "live_status": "not-assessed"
-    },
-    {
-      "id": "updates",
-      "name": "Dependency update proposals",
-      "role": "agent-vm",
-      "software": "Deterministic updater / publication broker",
-      "evidence_status": "source-pattern",
-      "notes": "Allowlisted pins, builds, reviewable PR and fixed-recipient report; no autonomous merge/deploy.",
-      "live_status": "not-assessed"
-    },
-    {
-      "id": "observation",
-      "name": "Fleet failure observation",
-      "role": "agent-vm",
-      "software": "Deterministic watchdog / observers",
-      "evidence_status": "source-pattern",
-      "notes": "Persist evidence; distinguish stale incident state from fresh failure.",
-      "live_status": "not-assessed"
-    },
-    {
-      "id": "agent-backup",
-      "name": "Agent state backup",
-      "role": "agent-vm",
-      "software": "Declared state-backup jobs",
-      "evidence_status": "source-pattern",
-      "notes": "SQLite consistency, provider auth, paired devices and isolated restore must be covered.",
-      "live_status": "not-assessed"
-    },
-    {
-      "id": "media",
-      "name": "Media playback and automation",
-      "role": "media-vm",
-      "software": "Jellyfin / Sonarr / Radarr / SABnzbd / Jellyseerr / Pinchflat / Maintainerr",
-      "evidence_status": "source-configured",
-      "notes": "Declare OCI workloads; isolate library paths from private photos.",
-      "live_status": "not-assessed"
-    },
-    {
-      "id": "photos",
-      "name": "Photo library",
-      "role": "photos-vm",
-      "software": "Immich / PostgreSQL / cache / machine learning",
-      "evidence_status": "source-configured",
-      "notes": "Database and media backup consistency; mount-writability and upload acceptance.",
-      "live_status": "not-assessed"
-    },
-    {
       "id": "voice",
       "name": "Voice input/output",
       "role": "agent-vm",
@@ -317,34 +583,14 @@
       "evidence_status": "reference-pattern",
       "notes": "Optional; media tooling alone does not establish configured voice support.",
       "live_status": "not-assessed"
-    },
-    {
-      "id": "document-tools",
-      "name": "PDF / Office / OCR tools",
-      "role": "agent-vm",
-      "software": "Document processing tooling",
-      "evidence_status": "source-pattern",
-      "notes": "Explicitly approved files, pinned executables, bounded processing.",
-      "live_status": "not-assessed"
-    },
-    {
-      "id": "browser-tools",
-      "name": "Browser automation",
-      "role": "agent-vm",
-      "software": "Browser tooling",
-      "evidence_status": "source-pattern",
-      "notes": "Test actual NixOS browser launch; no public debugging endpoint or copied personal cookies.",
-      "live_status": "not-assessed"
     }
   ],
-  "invariants": [
-    "public aliases are not connection targets",
-    "public reference grants no infrastructure authority",
-    "no source configuration implies live acceptance",
-    "edge does not inherit private management credentials",
-    "profiles are not Unix security boundaries",
-    "build is not activation; activation is not application acceptance",
-    "Git is not application-state backup",
-    "all VMs on one server share hardware failure risk"
+  "adjacent_systems": [
+    {
+      "id": "home-automation",
+      "software": "Home Assistant OS",
+      "relationship": "Separate appliance integrated through agent API tooling, outside five NixOS guest roles",
+      "live_status": "not-assessed"
+    }
   ]
 }

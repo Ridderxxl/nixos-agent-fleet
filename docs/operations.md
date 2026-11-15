@@ -2,6 +2,8 @@
 
 These are adaptation runbooks, not commands preauthorized against an existing fleet. Resolve real target, account, privilege boundary and recovery console privately before any action.
 
+For the current dated observations, see [current state](current-state.md). For historical symptoms, causes, conditional fixes and verification, see [common pitfalls](pitfalls.md). Those lessons do not authorize replaying historical commands.
+
 ## Source change and deployment
 
 1. Preserve unrelated dirty work; use a focused branch from the intended baseline.

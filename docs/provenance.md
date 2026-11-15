@@ -1,29 +1,39 @@
 # Evidence, provenance and limits
 
-## Review basis
+## Snapshot basis — 2026-11-15
 
-Prepared on **2026-11-15** from a read-only inspection of the operator's private fleet source (the local committed revision matched remote main at inspection), selected runbooks, and the earlier standalone companion-agent design. Existing uncommitted operational edits were not copied or changed. The source repository, original commit IDs, machine addresses, real role mappings and other people's installation details are intentionally not published.
+The subject is the **current fleet**, not a generic architecture or the subset useful for a companion installation. Evidence comprises the current committed private configuration, selected current runbooks, bounded read-only runtime observations collected on this date, and selected historical incident records. Existing unrelated uncommitted operational edits were not copied or changed. Private commit IDs, source URLs, role mappings, actual paths, network identities and raw operational output are deliberately excluded.
 
-The inspected source contains NixOS configurations for the private-apps, edge, agent, media and photo roles; enabled and disabled application modules; pinned workload sources; deterministic update/observation patterns; and agent/context documentation. This public tree was written afresh rather than exported from that repository. It contains no private Git history and does not preserve private commit authorship.
+The public representation has five NixOS guest roles on a Proxmox-based design, alongside a separate Home Assistant OS integration. No deployable flake, guest image or physical-host implementation is supplied. A NixOS/KVM physical host is an alternative, not a deployed fact.
 
-## What this establishes
+## Evidence axes
 
-- An explanatory representation of the main roles, service families and operating practices.
-- Inventory labels distinguish enabled configuration, gating, explicit disabling, represented patterns and suggested adaptations.
-- Product names describe software, not reachable original endpoints.
-- Prior companion-agent work motivates the standalone agent-appliance section; no other person's environment or private repository is exposed.
+1. **Source:** enabled configuration, independent readiness/credential/publication gates, explicitly disabled features, or represented integration patterns. Current configuration takes precedence over old migration prose for these labels.
+2. **Runtime:** on four guests, identity/platform plus bounded systemd unit/timer and container-state metadata. These establish process/timer presence and reported health only. Edge and hypervisor runtime were not inspected; management boundaries were not bypassed.
+3. **Acceptance:** explicitly **not assessed** for every cataloged capability. No fresh end-to-end user workflow or external effect was exercised for publication.
+4. **Recommendation:** adaptation ideas live separately from the current-services inventory. Normative security/backup contracts elsewhere are not attestation that every legacy component meets them.
 
-## What it does not establish
+Observations were collected earlier on the snapshot date and are not a continuously refreshed status page. A guest's checked-out commit is not its deployed source identity. Different checkouts and active generations were observed; this work does **not** establish that all guests run the same revision or canonical main. The machine model's observation date/method/notes are deliberately coarser than the private evidence.
 
-- No fresh live fleet health, guest reachability or user workflow was tested for this publication.
-- No assertion that all service families are running, all integrations are connected, or security improvements have been fully rolled out.
-- No claim that every source document was up to date. Some legacy snapshots describe old migration states; configuration was preferred for source-level enable/disable labels, never substituted for runtime evidence.
-- No turnkey build, flake, hardware image, production controller, penetration test, disaster-recovery rehearsal or fully reproducible dependency closure is delivered here.
-- No physical-host NixOS implementation: the reference substrate is Proxmox, with NixOS guests.
-- No guarantee that upstream context discovery, plugin APIs, installation commands or provider support remain unchanged. Check the selected version's upstream documentation.
+## Historical lessons
 
-## Validation scope
+The privately collected corpus contains the **200 earliest PR records**, spanning issue/PR numbers 1–211 because issue numbering has gaps. It is not equivalent to PR numbers 1–200, nor 200 verified deployments. Some proposals were not merged. Selected incident bodies and their superseding fixes were reviewed for the [pitfalls guide](pitfalls.md), together with the recent companion permission/gateway incident.
 
-`tools/validate.py` checks the public tree's documentation links, inventory contract, catalog consistency, aliases and publication-hygiene rules. Its negative self-tests ensure selected malformed inventory cases are rejected. Passing does not prove absence of every possible private identifier, runtime security, infrastructure correctness, or operational availability. Manual source-to-public review remains necessary.
+Those are retrospective source accounts, not a new reproduction or independent confirmation of every historical test claim. Lessons distinguish symptoms, supported causes, context-dependent remedies and verification to require now. No private PR URLs, original commit metadata, personal names or copied raw logs are published. Current enablement comes from current source, not those historical records.
 
-The repository's own GitHub account association is public. Sanitizing names inside documents cannot make a repository owner anonymous. No private-to-public hostname crosswalk is included.
+## What remains unverified
+
+- Complete deployment provenance and security enforcement across all roles.
+- Edge reachability, external-publication readiness and actual public ingress.
+- Individual authenticated app workflows, provider connectivity, pairing and delivered notifications.
+- Archive/backup content coverage, independent off-host copies and successful restoration.
+- Every package, runtime dependency closure and optional tool. Catalog coverage is principal service families, not a complete software bill of materials.
+- Exact hypervisor state, guest placement and physical storage health at publication time.
+
+## Publication validation
+
+`tools/validate.py` checks document links, explicit file allowlist, schema/evidence labels, human/catalog/model consistency, privacy patterns, and negative cases. It runs locally and in read-only GitHub Actions. It does not build NixOS, probe production, audit software or prove isolation. There is no application dependency lockfile to audit in this documentation-only tree.
+
+The exact staged blobs also require a private identifying-token scan, URL/email/address inventory and manual review. These are bounded safeguards, not proof that every possible identifier is absent. Remote blob comparison, anonymous reads and exact-revision Actions results establish publication, not live service acceptance.
+
+The GitHub owner's account association remains public. Content sanitization is not account anonymity, and no private-to-public hostname crosswalk is included.

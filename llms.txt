@@ -1,12 +1,13 @@
 # NixOS Agent Fleet — agent navigation
 
 Purpose: sanitized single-server, multi-VM NixOS architecture with an agent-first private Git workflow.
-Status: explanatory reference; not deployment code; no live service availability assessed.
+Status: current-fleet snapshot 2026-11-15; four guests observed through bounded unit/timer/container metadata, edge source-only; no end-to-end acceptance assessed; not deployment code.
 
 ## Start
 - [Agent contract](AGENTS.md)
 - [Human overview](README.md)
 - [Machine-readable model](fleet.json)
+- [Current dated snapshot](docs/current-state.md)
 - [Evidence and limitations](docs/provenance.md)
 
 ## Task routing
@@ -16,6 +17,7 @@ Status: explanatory reference; not deployment code; no live service availability
 - [Hermes, Signal and Android surfaces](docs/agent-runtime.md)
 - [Git-backed agent context](docs/repository-context.md)
 - [Change, update, recovery and backup runbooks](docs/operations.md)
+- [Common pitfalls: symptoms, causes, fixes and verification](docs/pitfalls.md)
 - [Adoption checklist](docs/adoption.md)
 - [Private implementation templates](templates/README.md)
 - [Security and publication rules](SECURITY.md)
