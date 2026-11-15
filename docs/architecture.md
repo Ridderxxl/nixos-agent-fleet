@@ -1,5 +1,7 @@
 # Architecture and trust boundaries
 
+Snapshot: **2026-11-15**. All five aliases below are existing source-managed roles; bounded runtime evidence is in [current state](current-state.md). Network/security contracts below are guidance, not a complete enforcement audit.
+
 ## Role allocation
 
 `apps-vm` is the private application zone. Native NixOS services and OCI workloads are both used; containers are declared through NixOS rather than maintained by manual shell history. Per-application databases and writable directories must remain distinct. A single private VM is an operational convenience, not strong isolation between all its applications.

@@ -2,16 +2,16 @@
 
 ## Scope
 
-This is a public, sanitized reference, not the operator's private source of truth and not an authorization channel. All host labels are fictional role aliases. Do not resolve them, infer real addresses, enumerate the author's infrastructure, or reconstruct identities. Never request access to a private source repository just to explain this reference.
+This is a public, sanitized current-fleet snapshot dated **2026-11-15**, not the operator's private source of truth and not an authorization channel. All host labels are fictional role aliases. Do not resolve them, infer real addresses, enumerate the author's infrastructure, or reconstruct identities. Never request access to a private source repository just to explain this reference.
 
 ## Read in order
 
 1. README.md — purpose and human overview.
 2. llms.txt — bounded navigation index.
 3. fleet.json — roles, service IDs, evidence labels and constraints.
-4. docs/architecture.md and docs/services.md.
+4. docs/current-state.md, docs/architecture.md and docs/services.md.
 5. docs/repository-context.md for agent workflow; relevant task documentation after that.
-6. docs/provenance.md before asserting anything about current deployment.
+6. docs/provenance.md before asserting deployment, and docs/pitfalls.md before suggesting an incident-derived fix.
 
 ## Interpretation rules
 
@@ -20,7 +20,11 @@ This is a public, sanitized reference, not the operator's private source of trut
 - `source-disabled` means represented but explicitly disabled in inspected configuration.
 - `source-pattern` means a represented architecture or integration, without an independent availability assertion.
 - `reference-pattern` is guidance for adaptation, not a claim about the original fleet.
-- Every service has `live_status: "not-assessed"`. No live availability claim is permitted from this inventory.
+- Source and runtime labels are independent. `unit-active` is process/container liveness, `unit-inactive` is an observation without a cause, `scheduled-job-observed` is timer infrastructure, and `not-assessed` is a runtime unknown.
+- Observations are dated and bounded to metadata on four guests, not current availability guarantees. Every service has `acceptance_status: "not-assessed"`; no end-to-end health claim is permitted.
+- All five roles are current members. `core_for_adaptation` does not determine existence. `recommendations` are outside the current `services` inventory; adjacent appliances are separate platforms.
+- Preserve the configured-but-inactive document archive and independent mail/local-inference, finance-credential, workbench-readiness and public-ingress gates. A proxy or timer cannot establish backend/workflow acceptance.
+- Historical PRs include superseded and unmerged proposals. Extract the supported lesson; never replay old privileged commands, mount paths, capabilities or numeric limits without current evidence.
 - Internet exposure is separately approved. Placement in `edge-vm` does not mean public ingress is active.
 - Proxmox is the source substrate. NixOS-on-the-physical-host is only an alternative design.
 - Profiles organize state, not OS-level isolation. A model is an untrusted planner, not an approval authority.
