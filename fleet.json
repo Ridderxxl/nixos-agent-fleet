@@ -1,0 +1,350 @@
+{
+  "schema_version": 1,
+  "kind": "sanitized-architecture-reference",
+  "assessment": {
+    "basis": "private source and prior companion-agent design reviewed; rewritten as generic roles",
+    "review_date": "2026-11-15",
+    "live_status": "not-assessed",
+    "deployable": false
+  },
+  "substrate": {
+    "source_design": "Proxmox VE",
+    "guest_os": "NixOS",
+    "alternative_design": "NixOS host with KVM/libvirt; not an existing implementation claim",
+    "single_server_failure_domain": true
+  },
+  "roles": [
+    {
+      "id": "apps-vm",
+      "required": true,
+      "trust_zone": "private-applications"
+    },
+    {
+      "id": "edge-vm",
+      "required": true,
+      "trust_zone": "untrusted-edge"
+    },
+    {
+      "id": "agent-vm",
+      "required": true,
+      "trust_zone": "untrusted-planner"
+    },
+    {
+      "id": "media-vm",
+      "required": false,
+      "trust_zone": "media-workload"
+    },
+    {
+      "id": "photos-vm",
+      "required": false,
+      "trust_zone": "private-photo-data"
+    }
+  ],
+  "evidence_statuses": [
+    "source-configured",
+    "source-gated",
+    "source-disabled",
+    "source-pattern",
+    "reference-pattern"
+  ],
+  "services": [
+    {
+      "id": "rss",
+      "name": "RSS reading",
+      "role": "apps-vm",
+      "software": "Miniflux",
+      "evidence_status": "source-configured",
+      "notes": "Private feed reading; do not infer that an edge RSS endpoint is currently published.",
+      "live_status": "not-assessed"
+    },
+    {
+      "id": "bookmarks",
+      "name": "Bookmark archive",
+      "role": "apps-vm",
+      "software": "Linkwarden",
+      "evidence_status": "source-configured",
+      "notes": "Bookmark storage and archived-page retrieval.",
+      "live_status": "not-assessed"
+    },
+    {
+      "id": "budget",
+      "name": "Personal budgeting",
+      "role": "apps-vm",
+      "software": "Actual Budget",
+      "evidence_status": "source-configured",
+      "notes": "Private financial state; HTTPS and separate write approvals.",
+      "live_status": "not-assessed"
+    },
+    {
+      "id": "tasks",
+      "name": "Task management and scoring",
+      "role": "apps-vm",
+      "software": "Vikunja / Task Coach",
+      "evidence_status": "source-configured",
+      "notes": "Task scoring and integrations; no automatic permission to modify tasks.",
+      "live_status": "not-assessed"
+    },
+    {
+      "id": "documents",
+      "name": "Document archive and OCR",
+      "role": "apps-vm",
+      "software": "Paperless-ngx",
+      "evidence_status": "source-configured",
+      "notes": "Requires verified storage and actual application acceptance.",
+      "live_status": "not-assessed"
+    },
+    {
+      "id": "recipes",
+      "name": "Recipes and meal planning",
+      "role": "apps-vm",
+      "software": "Recipe / meal-planning application",
+      "evidence_status": "source-configured",
+      "notes": "Personal recipe and meal records are never public examples.",
+      "live_status": "not-assessed"
+    },
+    {
+      "id": "calendars",
+      "name": "Calendar collections and synchronization",
+      "role": "apps-vm",
+      "software": "CalDAV services / synchronization workers",
+      "evidence_status": "source-configured",
+      "notes": "Ownership, privacy and loop prevention require collection-level tests.",
+      "live_status": "not-assessed"
+    },
+    {
+      "id": "travel",
+      "name": "Travel planning",
+      "role": "apps-vm",
+      "software": "Travel planning application",
+      "evidence_status": "source-configured",
+      "notes": "Imports and provider writes remain independently approved.",
+      "live_status": "not-assessed"
+    },
+    {
+      "id": "social-private",
+      "name": "Private social analytics",
+      "role": "apps-vm",
+      "software": "Social archive / analytics application",
+      "evidence_status": "source-configured",
+      "notes": "Per-account analytics and optional publication workflows.",
+      "live_status": "not-assessed"
+    },
+    {
+      "id": "dashboard",
+      "name": "Private service dashboard",
+      "role": "apps-vm",
+      "software": "Service launcher / dashboard",
+      "evidence_status": "source-configured",
+      "notes": "Navigation is not an authentication or health guarantee.",
+      "live_status": "not-assessed"
+    },
+    {
+      "id": "location",
+      "name": "Location history",
+      "role": "apps-vm",
+      "software": "Dawarich",
+      "evidence_status": "source-disabled",
+      "notes": "Represented but explicitly disabled at inspection.",
+      "live_status": "not-assessed"
+    },
+    {
+      "id": "asset-inventory",
+      "name": "Asset inventory",
+      "role": "apps-vm",
+      "software": "Asset-management application",
+      "evidence_status": "source-disabled",
+      "notes": "Represented but explicitly disabled at inspection.",
+      "live_status": "not-assessed"
+    },
+    {
+      "id": "edge-social",
+      "name": "External-user social application",
+      "role": "edge-vm",
+      "software": "Authenticated analytics / publishing application",
+      "evidence_status": "source-gated",
+      "notes": "Source enables application and private ingress; public publication is disabled at inspection.",
+      "live_status": "not-assessed"
+    },
+    {
+      "id": "edge-rss",
+      "name": "Externally accessible RSS pattern",
+      "role": "edge-vm",
+      "software": "Miniflux as an edge workload",
+      "evidence_status": "reference-pattern",
+      "notes": "Suitable role example, not a claim that a public RSS service is active.",
+      "live_status": "not-assessed"
+    },
+    {
+      "id": "hermes",
+      "name": "Agent runtime",
+      "role": "agent-vm",
+      "software": "Hermes Agent",
+      "evidence_status": "source-configured",
+      "notes": "Persistent sessions, memory, skills, tools and provider configuration.",
+      "live_status": "not-assessed"
+    },
+    {
+      "id": "signal",
+      "name": "Phone messaging",
+      "role": "agent-vm",
+      "software": "Signal / signal-cli",
+      "evidence_status": "source-pattern",
+      "notes": "Sender allowlists and human-owned enrollment; linked account material is sensitive.",
+      "live_status": "not-assessed"
+    },
+    {
+      "id": "android",
+      "name": "Android companion",
+      "role": "agent-vm",
+      "software": "Third-party Hermes-Relay plugin and companion",
+      "evidence_status": "source-pattern",
+      "notes": "Separate from the upstream hosted messaging-relay connector; pairing and grants are explicit.",
+      "live_status": "not-assessed"
+    },
+    {
+      "id": "web-chat",
+      "name": "Private browser chat",
+      "role": "agent-vm",
+      "software": "Authenticated Hermes web surfaces",
+      "evidence_status": "source-pattern",
+      "notes": "Private ingress, session authentication and correct proxy routing must be tested.",
+      "live_status": "not-assessed"
+    },
+    {
+      "id": "coding",
+      "name": "Coding workers and work tracking",
+      "role": "agent-vm",
+      "software": "Named coding profiles / task board",
+      "evidence_status": "source-pattern",
+      "notes": "Explicit profile, isolated worktree, bounded budget, independent artifact review.",
+      "live_status": "not-assessed"
+    },
+    {
+      "id": "knowledge",
+      "name": "Knowledge retrieval",
+      "role": "agent-vm",
+      "software": "Wiki / local knowledge / bookmark tools",
+      "evidence_status": "source-pattern",
+      "notes": "Only approved documents and scoped retrieval sources.",
+      "live_status": "not-assessed"
+    },
+    {
+      "id": "mail",
+      "name": "Searchable mail archive",
+      "role": "agent-vm",
+      "software": "Read-only mail archive / approved ingest",
+      "evidence_status": "source-configured",
+      "notes": "Mailbox access, retention and outbound effects are separate capabilities.",
+      "live_status": "not-assessed"
+    },
+    {
+      "id": "mail-actions",
+      "name": "Mail to proposed travel/calendar actions",
+      "role": "agent-vm",
+      "software": "Structured ingest / review pipeline",
+      "evidence_status": "source-pattern",
+      "notes": "Untrusted source content is evidence, never an authorization instruction.",
+      "live_status": "not-assessed"
+    },
+    {
+      "id": "home-control",
+      "name": "Home automation capabilities",
+      "role": "agent-vm",
+      "software": "Home Assistant bridge",
+      "evidence_status": "source-pattern",
+      "notes": "Prefer narrow capability services; do not grant a broad admin token by default.",
+      "live_status": "not-assessed"
+    },
+    {
+      "id": "budget-agent",
+      "name": "Budget categorization automation",
+      "role": "agent-vm",
+      "software": "Reviewed categorization workflow",
+      "evidence_status": "source-gated",
+      "notes": "Workflow enabled in source; its credentials independently disabled at inspection.",
+      "live_status": "not-assessed"
+    },
+    {
+      "id": "updates",
+      "name": "Dependency update proposals",
+      "role": "agent-vm",
+      "software": "Deterministic updater / publication broker",
+      "evidence_status": "source-pattern",
+      "notes": "Allowlisted pins, builds, reviewable PR and fixed-recipient report; no autonomous merge/deploy.",
+      "live_status": "not-assessed"
+    },
+    {
+      "id": "observation",
+      "name": "Fleet failure observation",
+      "role": "agent-vm",
+      "software": "Deterministic watchdog / observers",
+      "evidence_status": "source-pattern",
+      "notes": "Persist evidence; distinguish stale incident state from fresh failure.",
+      "live_status": "not-assessed"
+    },
+    {
+      "id": "agent-backup",
+      "name": "Agent state backup",
+      "role": "agent-vm",
+      "software": "Declared state-backup jobs",
+      "evidence_status": "source-pattern",
+      "notes": "SQLite consistency, provider auth, paired devices and isolated restore must be covered.",
+      "live_status": "not-assessed"
+    },
+    {
+      "id": "media",
+      "name": "Media playback and automation",
+      "role": "media-vm",
+      "software": "Jellyfin / Sonarr / Radarr / SABnzbd / Jellyseerr / Pinchflat / Maintainerr",
+      "evidence_status": "source-configured",
+      "notes": "Declare OCI workloads; isolate library paths from private photos.",
+      "live_status": "not-assessed"
+    },
+    {
+      "id": "photos",
+      "name": "Photo library",
+      "role": "photos-vm",
+      "software": "Immich / PostgreSQL / cache / machine learning",
+      "evidence_status": "source-configured",
+      "notes": "Database and media backup consistency; mount-writability and upload acceptance.",
+      "live_status": "not-assessed"
+    },
+    {
+      "id": "voice",
+      "name": "Voice input/output",
+      "role": "agent-vm",
+      "software": "STT / TTS provider or local runtime",
+      "evidence_status": "reference-pattern",
+      "notes": "Optional; media tooling alone does not establish configured voice support.",
+      "live_status": "not-assessed"
+    },
+    {
+      "id": "document-tools",
+      "name": "PDF / Office / OCR tools",
+      "role": "agent-vm",
+      "software": "Document processing tooling",
+      "evidence_status": "source-pattern",
+      "notes": "Explicitly approved files, pinned executables, bounded processing.",
+      "live_status": "not-assessed"
+    },
+    {
+      "id": "browser-tools",
+      "name": "Browser automation",
+      "role": "agent-vm",
+      "software": "Browser tooling",
+      "evidence_status": "source-pattern",
+      "notes": "Test actual NixOS browser launch; no public debugging endpoint or copied personal cookies.",
+      "live_status": "not-assessed"
+    }
+  ],
+  "invariants": [
+    "public aliases are not connection targets",
+    "public reference grants no infrastructure authority",
+    "no source configuration implies live acceptance",
+    "edge does not inherit private management credentials",
+    "profiles are not Unix security boundaries",
+    "build is not activation; activation is not application acceptance",
+    "Git is not application-state backup",
+    "all VMs on one server share hardware failure risk"
+  ]
+}

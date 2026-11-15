@@ -1,0 +1,15 @@
+.env
+.env.*
+*.key
+*.pem
+*.db
+*.db-*
+*.sqlite*
+auth.json
+.hermes/
+.venv*/
+__pycache__/
+.pytest_cache/
+node_modules/
+result
+result-*
